@@ -1,8 +1,8 @@
 {lib, config, ...}: let
   cfg = config.playground;
+  types = lib.types;
 in {
   options.playground = {
-    enable = lib.mkEnableOption "playground";
     ashift = lib.mkOption {
         type = lib.types.int;
         default = 0;
@@ -18,7 +18,7 @@ in {
 
   config.playground = {
     output = let
-      cleanCfg = removeAttrs cfg [ "output" "enable" ];
+      cleanCfg = removeAttrs cfg [ "output" ];
       stringCfg = lib.mapAttrs (name: value: builtins.toString value) cleanCfg;
       setCfg = lib.mapAttrsToList (name: value: name + "=" + value) stringCfg;
     in
