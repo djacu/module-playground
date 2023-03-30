@@ -1,8 +1,8 @@
 {lib, config, ...}: let
-  cfg = config.playground;
+  cfg = config.zpoolprops;
   types = lib.types;
 in {
-  options.playground = {
+  options.zpoolprops = {
     ashift = lib.mkOption {
         type = lib.types.int;
         default = 0;
@@ -16,13 +16,12 @@ in {
     };
   };
 
-  config.playground = {
+  config.zpoolprops = {
     output = let
       cleanCfg = removeAttrs cfg [ "output" ];
       stringCfg = lib.mapAttrs (name: value: builtins.toString value) cleanCfg;
       setCfg = lib.mapAttrsToList (name: value: name + "=" + value) stringCfg;
     in
       lib.concatMapStrings (x: "-o " + x + " \\\n") setCfg;
-      #"Obi Wan: Hello there!\n" + (lib.concatMapStrings  (x: "-o " + x + "\n") (map toString (lib.attrValues (cfg // {output=null;}))));
   };
 }
